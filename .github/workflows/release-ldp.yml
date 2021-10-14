@@ -5,7 +5,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+*'
 
 env:
-  IMAGE_NAME: ldp
+  IMAGE_NAME: funkymalc/ldp
 
 jobs:
   release-ldp-docker:
