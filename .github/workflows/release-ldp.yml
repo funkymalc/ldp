@@ -1,10 +1,11 @@
-name: LDP GA Release Workflow
+name: LDP Release Workflow
 on:
   push:
     tags:
       - '[0-9]+.[0-9]+.[0-9]+*'
 
 env:
+  REGISTRY: ghcr.io
   IMAGE_NAME: funkymalc/ldp
 
 jobs:
@@ -14,17 +15,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Log in Docker Hub
+      - name: Log into GH Container Registry
         uses: docker/login-action@v1 
         with:
-          username: ${{ secrets.DOCKERHUB_USER }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v3
         with:
-          images: ${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
   
       - name: Build and publish Docker image
         uses: docker/build-push-action@v2
